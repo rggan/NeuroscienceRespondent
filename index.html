@@ -1,6 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>RGGAN</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Neuroscience Respondent</title>
+    <link rel="stylesheet" href="./style.css">
+    <!-- <link rel="icon" href="./favicon.ico" type="image/x-icon"> -->
   </head>
+  
+  <body>
+    <main>
+      <h1>Neuroscience Respondent</h1>
+        <h2>Ask a question and receive an answer!</h2>
+          <div id = "chat-log">
+          </div>
+        <!-- input form -->
+        <form action = "/" method = "POST">
+          <div>
+            <textarea rows = 3 name = "message" id = "message" placeholder = "Enter your neuroscience question here: "></textarea>
+          </div>
+          <div>
+            <p>Select your expertise level:</p>
+            <input type="radio" id="beginner" name="expertise" value="You are explaining the concepts of neuroscience so a child can understand" checked>
+            <label for="beginner">Beginner</label>
+
+            <input type="radio" id="intermediate" name="expertise" value="You are a highschool neuroscience lecturer.">
+            <label for="intermediate">Intermediate</label>
+
+            <input type="radio" id="advanced" name="expertise" value="You are the expert leading neuroscientist at the top of their field.">
+            <label for="advanced">Advanced</label>
+          </div>
+          <div>
+            <button type = "submit">Submit</button>
+          </div>
+        </form>
+    </main>
+
+
+    <script>
+        // to reference HTML elements in DOM
+        const chatLog = document.getElementById('chat-log'); 
+        const message = document.getElementById('message');
+        const form = document.querySelector('form');
+
+
+        // to trigger an action when the form is submitted
+        if (form){
+          
+            form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const msgText = message.value; // the user's question
+            message.value = '';     // to reset message to empty, to look submitted
+
+            const selectedExpertise = document.querySelector('input[name="expertise"]:checked').value;
+
+
+            // create new div element for user input message
+            const msgElement = document.createElement('div'); 
+            msgElement.classList.add('message');        // to add class names to new div element
+            msgElement.classList.add('question');
+            msgElement.innerHTML = `<div class = "message_text">${msgText}</div>`; // to inner add input text to our div element
+            chatLog.appendChild(msgElement);        // add new div element we create to our parent element chatlog 
+            chatLog.scrollTop = chatLog.scrollHeight;
+            
+            // fetch request to OpenAI backend
+            //post request to designated web server
+            fetch('http://localhost:3001/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: msgText,  expertise: selectedExpertise})    // msg that user just input
+            })
+            .then(res => res.json())
+            .then(data => {
+                // create new div element for response    
+                const msgElement = document.createElement('div'); 
+                msgElement.classList.add('message');
+                msgElement.classList.add('answer');
+                msgElement.innerHTML = `<div class = "message__text">${data.response.content}</div>`;
+                chatLog.appendChild(msgElement);
+                chatLog.scrollTop = chatLog.scrollHeight;
+                })
+            })
+        }
+        
+    </script>
+  </body>
 </html>
