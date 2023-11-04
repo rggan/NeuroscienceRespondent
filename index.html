@@ -13,12 +13,16 @@
     <main>
       <h1>Neuroscience Respondent</h1>
         <h2>Ask a question and receive an answer!</h2>
-          <div id = "chat-log">
-          </div>
+        <div id = "chat-log"></div>
+        <div id="notify" class="notify" style="display: none;">
+          Thank you for waiting! <br> We are processing your request.
+          <span id="close-notify" class="close-notify">&#10006;</span>
+        </div>        
         <!-- input form -->
         <form action = "/" method = "POST">
-          <div>
+          <div class = "input-container">
             <textarea rows = 3 name = "message" id = "message" placeholder = "Enter your neuroscience question here: "></textarea>
+            <span id="clear-input" class="clear-button" style="display: none;">&#10006;</span>
           </div>
           <div>
             <p>Select your expertise level:</p>
@@ -43,17 +47,47 @@
         const chatLog = document.getElementById('chat-log'); 
         const message = document.getElementById('message');
         const form = document.querySelector('form');
+        const clearInput = document.getElementById('clear-input');
+        const notify = document.getElementById('notify');
+        const closeNotify = document.getElementById('close-notify');
 
+        // controls visibility of clear button, if there is text, makes button visible, else none
+        message.addEventListener('input', () => {
+          clearInput.style.display = message.value ? 'block' : 'none';
+        });
 
+        // clear text area when clear x button clicked
+        clearInput.addEventListener('click', () => {
+          message.value = '';
+          clearInput.style.display = 'none';
+        });
+
+        // close notification on click
+        closeNotify.addEventListener('click', () =>{
+          hideNotify()
+        });
+
+        // function for showing notification
+        function showNotify(){
+          notify.style.display = 'block';
+        }
+        // function for hiding notification
+        function hideNotify(){
+          notify.style.display = 'none';
+        }
         // to trigger an action when the form is submitted
-        if (form){
-          
-            form.addEventListener('submit', (e) => {
+        if (form){  
+          form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const msgText = message.value; // the user's question
+            // show processing notification when form is submitted
+            showNotify();
+
+            // the user's question
+            const msgText = message.value; 
             message.value = '';     // to reset message to empty, to look submitted
 
+            // get expertise selected
             const selectedExpertise = document.querySelector('input[name="expertise"]:checked').value;
 
 
@@ -64,7 +98,7 @@
             msgElement.innerHTML = `<div class = "message_text">${msgText}</div>`; // to inner add input text to our div element
             chatLog.appendChild(msgElement);        // add new div element we create to our parent element chatlog 
             chatLog.scrollTop = chatLog.scrollHeight;
-            
+
             // fetch request to OpenAI backend
             //post request to designated web server
             fetch('http://localhost:3001/', {
@@ -74,6 +108,9 @@
             })
             .then(res => res.json())
             .then(data => {
+                // hide notification when response is received
+                hideNotify();
+
                 // create new div element for response    
                 const msgElement = document.createElement('div'); 
                 msgElement.classList.add('message');
@@ -81,8 +118,8 @@
                 msgElement.innerHTML = `<div class = "message__text">${data.response.content}</div>`;
                 chatLog.appendChild(msgElement);
                 chatLog.scrollTop = chatLog.scrollHeight;
-                })
             })
+          })
         }
         
     </script>

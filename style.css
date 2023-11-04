@@ -17,6 +17,7 @@ body {
     padding: 20px;
     max-width: 800px; /* Adjust the maximum width as needed */
     margin-top: 20px auto;
+    width: 100%;
   }
   
   h1 {
@@ -42,11 +43,16 @@ body {
     border: 1px solid #007bff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 20px;
+    margin-bottom: 20px;
     max-height: 400px;
     overflow-y: auto;
     text-align: center;
   }
   
+  .input-container{
+    position: relative;
+  }
+
   textarea {
     display: flex;
     margin-top: 20px;
@@ -56,7 +62,40 @@ body {
     border-radius: 10px;
     font-size: 16px;
     color:#007bff;
-    width: 94%;
+    width: 97%;
+  }
+
+  .clear-button{
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    cursor: pointer;
+    color:#007bff;
+    display: none; /* Initially hide the button */
+    z-index: 1; /* Ensure the button is on top of the textarea */
+  }
+
+  .notify {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none;
+    border: 1px solid #000000; /* Add a border around the notification */
+    height: 50px;
+    max-width: 300px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the notification horizontally */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .close-notify {
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
   }
   
   .message {
