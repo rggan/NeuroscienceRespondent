@@ -56,6 +56,14 @@
           clearInput.style.display = message.value ? 'block' : 'none';
         });
 
+        // event listener for Enter key when user inputting
+        message.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey){
+            e.preventDefault();
+            form.dispatchEvent(new Event('submit'));
+          }
+        });
+
         // clear text area when clear x button clicked
         clearInput.addEventListener('click', () => {
           message.value = '';
@@ -75,6 +83,25 @@
         function hideNotify(){
           notify.style.display = 'none';
         }
+
+        // function to confirm message delete
+        function confirmDelete(msgElement) {
+          const confirmation = confirm('Are you sure you want to delete this message?');
+          if (confirmation) {
+            // Delete the message from the chat log
+            chatLog.removeChild(msgElement)
+          }
+        }
+
+        // function to add delete buttons to chat messages
+        function addDeleteButton(msgElement) {
+          const deleteButton = document.createElement('span');
+          deleteButton.className = 'delete-button';
+          deleteButton.innerHTML = '&#10006;';
+          deleteButton.addEventListener('click', () => confirmDelete(msgElement));
+          msgElement.appendChild(deleteButton);
+        }
+
         // to trigger an action when the form is submitted
         if (form){  
           form.addEventListener('submit', (e) => {
@@ -90,7 +117,6 @@
             // get expertise selected
             const selectedExpertise = document.querySelector('input[name="expertise"]:checked').value;
 
-
             // create new div element for user input message
             const msgElement = document.createElement('div'); 
             msgElement.classList.add('message');        // to add class names to new div element
@@ -98,6 +124,7 @@
             msgElement.innerHTML = `<div class = "message_text">${msgText}</div>`; // to inner add input text to our div element
             chatLog.appendChild(msgElement);        // add new div element we create to our parent element chatlog 
             chatLog.scrollTop = chatLog.scrollHeight;
+            addDeleteButton(msgElement);
 
             // fetch request to OpenAI backend
             //post request to designated web server
@@ -118,10 +145,12 @@
                 msgElement.innerHTML = `<div class = "message__text">${data.response.content}</div>`;
                 chatLog.appendChild(msgElement);
                 chatLog.scrollTop = chatLog.scrollHeight;
+                addDeleteButton(msgElement);
+
             })
           })
         }
-        
+
     </script>
   </body>
 </html>
