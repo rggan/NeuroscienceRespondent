@@ -11,7 +11,7 @@
   
   <body>
     <main>
-      <h1>Neuroscience Respondent</h1>
+      <h1>NEUROSCIENCE RESPONDENT</h1>
         <h2>Ask a question and receive an answer!</h2>
         <div id = "chat-log"></div>
         <div id="notify" class="notify" style="display: none;">
@@ -26,19 +26,25 @@
           </div>
           <div>
             <p>Select your expertise level:</p>
-            <input type="radio" id="beginner" name="expertise" value="You are explaining the concepts of neuroscience so a child can understand" checked>
+            <input type="radio" id="beginner" name="expertise" value="You are explaining the concepts of neuroscience so a child can understand in 2 sentences." checked>
             <label for="beginner">Beginner</label>
 
-            <input type="radio" id="intermediate" name="expertise" value="You are a highschool neuroscience lecturer.">
+            <input type="radio" id="intermediate" name="expertise" value="You are a highschool neuroscience lecturer with a 1 paragraph response">
             <label for="intermediate">Intermediate</label>
 
-            <input type="radio" id="advanced" name="expertise" value="You are the expert leading neuroscientist at the top of their field.">
+            <input type="radio" id="advanced" name="expertise" value="You are the expert leading neuroscientist explaining with a detailed 1 paragraph response and 5 main points.">
             <label for="advanced">Advanced</label>
           </div>
           <div>
             <button type = "submit">Submit</button>
           </div>
         </form>
+        <h3>Neuroscience Articles</h3>
+        <h4>Please enjoy some informative readings!</h4>
+        <div class = "articles-container">  
+          <ul id="article-list"></ul>
+        </div>
+        <button id="fetchArticlesBtn">Fetch Articles</button>
     </main>
 
 
@@ -150,6 +156,29 @@
             })
           })
         }
+
+        document.getElementById('fetchArticlesBtn').addEventListener('click', () => {
+          // fetch request to webscraper microservice
+          fetch('http://localhost:5001/articles', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          })
+          .then(res => res.json())
+          .then(data => {
+            const articleList = document.getElementById('article-list');
+            data.forEach(article => {
+              const listItem = document.createElement('li');
+              const link = document.createElement('a');
+              link.href = article.link;
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              link.textContent = article.title;
+              listItem.appendChild(link);
+              articleList.appendChild(listItem);
+            })
+          })
+        })
+        
 
     </script>
   </body>
