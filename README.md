@@ -1,4 +1,13 @@
 # Neuroscience Respondent
+## Video Demo
+
+
+https://github.com/rggan/NeuroscienceRespondent/assets/77026454/fe76c9cf-3230-44c0-b606-bedcca59540e
+
+
+
+https://github.com/rggan/NeuroscienceRespondent/assets/77026454/c4945746-5db5-4bc5-8b6c-1584f2f51643
+
 
 ## Description
 ### Neuroscience Respondent is a web application that allows users to ask neuroscience-related questions and receive real-time answers tailored to neuroscience. The application utilizes natural language processing through OpenAI's API to generate accurate responses to user questions. Additionally, it integrates web scraping functionality to fetch and display neuroscience articles for user reference.
