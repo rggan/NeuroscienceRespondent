@@ -18,7 +18,7 @@ https://github.com/rggan/NeuroscienceRespondent/assets/77026454/c4945746-5db5-4b
 ### Integration of web scraping functionality to fetch and display neuroscience articles titles and links.
 
 ## Technologies Used
-### OpenAI API, React, Node.js, Express.js, Axios, Cheerio, CORS, HTML, CSS, Javscript
+### OpenAI API, Node.js, Express.js, Axios, Cheerio, CORS, HTML, CSS, Javscript
 
 ## Figma Prototype
 ### Link: https://www.figma.com/proto/HbjwfnAT5TBCHcnb5nStkA/CS361-Project?type=design&node-id=102-2&t=6o6XnEhQUMDpHei3-1&scaling=scale-down&page-id=0%3A1&starting-point-node-id=102%3A2&mode=design
